@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.klyte.places.dto.PlaceDTO;
 import com.klyte.places.dto.PlaceRequestDTO;
 import com.klyte.places.entities.PlaceEntity;
+import com.klyte.places.exception.PlaceNotFoundException;
 import com.klyte.places.repository.PlacesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,14 +30,20 @@ public class PlacesServiceImpl implements PlacesService {
 
     @Override
     public PlaceDTO getPlace(String slug) {
-        return mapper.convertValue(repository.findByUrlSlug(slug), PlaceDTO.class);
+        PlaceEntity place = repository.findByUrlSlug(slug);
+
+        if (place == null) {
+            throw new PlaceNotFoundException(String.format("Slug '%s' was not found.", slug));
+        }
+
+        return mapper.convertValue(place, PlaceDTO.class);
     }
 
     @Override
     public PlaceDTO updatePlace(String slug, PlaceRequestDTO data) {
         PlaceEntity place = repository.findByUrlSlug(slug);
         if (place == null) {
-            throw new RuntimeException("");
+            throw new PlaceNotFoundException(String.format("Slug '%s' was not found.", slug));
         }
 
         place.setCity(data.getCity());

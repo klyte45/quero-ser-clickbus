@@ -5,19 +5,19 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @AllArgsConstructor
 @NoArgsConstructor
 public class PlaceRequestDTO {
-    @NotBlank
+    @Pattern(regexp = ".{1,120}")
     private String name;
-    @NotBlank
+    @Pattern(regexp = "[a-z0-9\\-]{1,120}")
     private String urlSlug;
-    @NotBlank
+    @Pattern(regexp = ".{1,120}")
     private String city;
-    @NotBlank
+    @Pattern(regexp = "[A-Z]{2}")
     private String state;
 }
