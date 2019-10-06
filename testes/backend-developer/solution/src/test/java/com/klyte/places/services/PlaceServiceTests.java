@@ -36,7 +36,7 @@ public class PlaceServiceTests {
     public void testCreateSuccess() {
         PlaceDTO in = createRandomPlaceDTO();
         ObjectWrapper<PlaceEntity> savedEntity = new ObjectWrapper<>();
-        Mockito.when(repository.save(any())).then((x) -> {
+        Mockito.when(repository.saveAndFlush(any())).then((x) -> {
             PlaceEntity entity = x.getArgument(0);
             assertDtoEntitySameValue(in, entity);
             savedEntity.setValue(entity);
@@ -59,7 +59,7 @@ public class PlaceServiceTests {
     @Test(expected = DummyException.class)
     public void testCreateFailure() {
         PlaceDTO in = createRandomPlaceDTO();
-        Mockito.when(repository.save(any())).thenThrow(new DummyException());
+        Mockito.when(repository.saveAndFlush(any())).thenThrow(new DummyException());
         placeService.createPlace(in);
     }
 
@@ -69,7 +69,7 @@ public class PlaceServiceTests {
         PlaceDTO in = createRandomPlaceDTO();
         String inUrl = RandomStringUtils.random((int) (1 + Math.random() * 12), true, true) + "-";
         ObjectWrapper<PlaceEntity> savedEntity = new ObjectWrapper<>();
-        Mockito.when(repository.save(any())).then((x) -> {
+        Mockito.when(repository.saveAndFlush(any())).then((x) -> {
             PlaceEntity entity = x.getArgument(0);
             assertDtoEntitySameValue(in, entity);
             savedEntity.setValue(entity);

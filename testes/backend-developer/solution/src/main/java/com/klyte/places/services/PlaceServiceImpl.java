@@ -51,7 +51,7 @@ public class PlaceServiceImpl implements PlaceService {
         place.setState(data.getState());
         place.setUrlSlug(data.getUrlSlug());
 
-        place = repository.save(place);
+        place = repository.saveAndFlush(place);
 
         return mapper.convertValue(place, PlaceDTO.class);
     }
@@ -70,8 +70,8 @@ public class PlaceServiceImpl implements PlaceService {
         place.setState(data.getState());
         place.setUrlSlug(data.getUrlSlug());
 
-        place = repository.save(place);
+        place = repository.saveAndFlush(place);
 
-        return getPlace(place.getUrlSlug());
+        return mapper.convertValue(place, PlaceDTO.class);
     }
 }
