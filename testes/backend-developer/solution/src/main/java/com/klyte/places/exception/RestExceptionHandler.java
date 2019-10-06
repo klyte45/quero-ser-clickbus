@@ -15,12 +15,17 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(PlaceNotFoundException.class)
-    public static ResponseEntity<ErrorDTO> defaultHandler(PlaceNotFoundException ex) {
-        return new ResponseEntity<>(new ErrorDTO(ex), ex.getStatusCode());
+    static ResponseEntity<Object> handlePlaceNotFoundException(PlaceNotFoundException ex) {
+        return generateDefaultErrorDTO(ex, ex.getStatusCode());
+    }
+
+    @ExceptionHandler(Exception.class)
+    static ResponseEntity<Object> handleGenericException(Exception ex) {
+        return generateDefaultErrorDTO(ex, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+    public ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException exception,
             HttpHeaders headers,
             HttpStatus status,
