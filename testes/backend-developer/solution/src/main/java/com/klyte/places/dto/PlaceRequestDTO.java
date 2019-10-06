@@ -5,14 +5,19 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import javax.validation.constraints.NotBlank;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @AllArgsConstructor
 @NoArgsConstructor
-public class PlaceDTO extends PlaceRequestDTO {
-    private Date creationDate;
-
-    private Date updateDate;
+public class PlaceRequestDTO {
+    @NotBlank
+    private String name;
+    @NotBlank
+    private String urlSlug;
+    @NotBlank
+    private String city;
+    @NotBlank
+    private String state;
 }

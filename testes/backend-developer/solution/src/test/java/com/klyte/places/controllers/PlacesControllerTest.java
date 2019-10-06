@@ -3,6 +3,7 @@ package com.klyte.places.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.klyte.places.PlacesApplication;
 import com.klyte.places.dto.PlaceDTO;
+import com.klyte.places.dto.PlaceRequestDTO;
 import com.klyte.places.services.PlacesService;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
@@ -55,10 +56,10 @@ public class PlacesControllerTest {
     @Before
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-        Mockito.when(placesService.createPlace(any())).then((x) -> x.getArgument(0));
-        Mockito.when(placesService.getPlace(any())).then((x) -> new PlaceDTO("TESTE", x.getArgument(0), "Teste", "Teste", null, null));
+        Mockito.when(placesService.createPlace(any())).then((x) -> createPlaceDTO(x.getArgument(0)));
+        Mockito.when(placesService.getPlace(any())).then((x) -> createPlaceDTO(x.getArgument(0), "TESTE", "Teste", "Teste"));
         Mockito.when(placesService.listPlaces()).thenReturn(Arrays.asList(new PlaceDTO(), new PlaceDTO()));
-        Mockito.when(placesService.updatePlace(any(), any())).then((x) -> x.getArgument(1));
+        Mockito.when(placesService.updatePlace(any(), any())).then((x) -> createPlaceDTO(x.getArgument(1)));
         Mockito.doNothing().when(placesService).deletePlace(any());
     }
 
@@ -76,7 +77,7 @@ public class PlacesControllerTest {
         mockMvc.perform(get(baseUrl + "/" + uriTest))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("slug", is(uriTest)));
+                .andExpect(jsonPath("urlSlug", is(uriTest)));
     }
 
     @Test
@@ -98,7 +99,7 @@ public class PlacesControllerTest {
                 .content(objectMapper.writeValueAsString(createPlaceDTO(slug, name, city, state))))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.slug", is(slug)))
+                .andExpect(jsonPath("$.urlSlug", is(slug)))
                 .andExpect(jsonPath("$.name", is(name)))
                 .andExpect(jsonPath("$.city", is(city)))
                 .andExpect(jsonPath("$.state", is(state)));
@@ -115,12 +116,15 @@ public class PlacesControllerTest {
                 .content(objectMapper.writeValueAsString(createPlaceDTO(slug, name, city, state))))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.slug", is(slug)))
+                .andExpect(jsonPath("$.urlSlug", is(slug)))
                 .andExpect(jsonPath("$.name", is(name)))
                 .andExpect(jsonPath("$.city", is(city)))
                 .andExpect(jsonPath("$.state", is(state)));
     }
 
+    private static PlaceDTO createPlaceDTO(PlaceRequestDTO requestDTO) {
+        return createPlaceDTO(requestDTO.getUrlSlug(), requestDTO.getName(), requestDTO.getCity(), requestDTO.getState());
+    }
     private static PlaceDTO createPlaceDTO(String slug, String name, String city, String state) {
         PlaceDTO result = new PlaceDTO();
         result.setUrlSlug(slug);

@@ -1,6 +1,7 @@
 package com.klyte.places.controllers;
 
 import com.klyte.places.dto.PlaceDTO;
+import com.klyte.places.dto.PlaceRequestDTO;
 import com.klyte.places.services.PlacesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,12 +29,12 @@ public class PlacesController {
     }
 
     @PutMapping("/{slug}")
-    public ResponseEntity<PlaceDTO> update(@PathVariable("slug") String urlSlug, @RequestBody @Valid PlaceDTO place) {
+    public ResponseEntity<PlaceDTO> update(@PathVariable("slug") String urlSlug, @RequestBody @Valid PlaceRequestDTO place) {
         return new ResponseEntity<>(placesService.updatePlace(urlSlug, place), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<PlaceDTO> create(@RequestBody @Valid PlaceDTO place) {
+    public ResponseEntity<PlaceDTO> create(@RequestBody @Valid PlaceRequestDTO place) {
         return new ResponseEntity<>(placesService.createPlace(place), HttpStatus.CREATED);
     }
 
