@@ -8,11 +8,13 @@ import com.klyte.places.exception.PlaceNotFoundException;
 import com.klyte.places.repository.PlaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class PlaceServiceImpl implements PlaceService {
 
     @Autowired
@@ -22,9 +24,10 @@ public class PlaceServiceImpl implements PlaceService {
     private ObjectMapper mapper;
 
     @Override
-    public List<PlaceDTO> listPlaces() {
+    public List<PlaceDTO> listPlaces(String name) {
         List<PlaceDTO> result = new ArrayList<>();
-        repository.findAll().forEach((p) -> result.add(mapper.convertValue(p, PlaceDTO.class)));
+        repository.findAllByNameContaining(name).forEach((p) -> result.add(mapper.convertValue(p, PlaceDTO.class)));
+
         return result;
     }
 

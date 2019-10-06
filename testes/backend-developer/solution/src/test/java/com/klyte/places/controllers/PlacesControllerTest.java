@@ -28,7 +28,6 @@ import static com.klyte.places.util.TestUtils.createRandomPlaceDTO;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -59,7 +58,7 @@ public class PlacesControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
         Mockito.when(placeService.createPlace(any())).then((x) -> createPlaceDTO(x.getArgument(0)));
         Mockito.when(placeService.getPlace(any())).then((x) -> createPlaceDTO(x.getArgument(0), "TESTE", "Teste", "Teste"));
-        Mockito.when(placeService.listPlaces()).thenReturn(Arrays.asList(new PlaceDTO(), new PlaceDTO()));
+        Mockito.when(placeService.listPlaces(any())).thenReturn(Arrays.asList(new PlaceDTO(), new PlaceDTO()));
         Mockito.when(placeService.updatePlace(any(), any())).then((x) -> createPlaceDTO(x.getArgument(1)));
         Mockito.doNothing().when(placeService).deletePlace(any());
     }
@@ -79,13 +78,6 @@ public class PlacesControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("urlSlug", is(uriTest)));
-    }
-
-    @Test
-    public void testDelete() throws Exception {
-        String uriTest = RandomStringUtils.random((int) (1 + Math.random() * 8), true, true);
-        mockMvc.perform(delete(baseUrl + "/" + uriTest))
-                .andExpect(status().isNoContent());
     }
 
     @Test

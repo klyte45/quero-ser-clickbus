@@ -22,7 +22,7 @@ public class PlacesApplication {
 		ObjectMapper om = new ObjectMapper();
 		om.registerModule(new JavaTimeModule());
 		om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
 		om.setDateFormat(df);
 		return om;
 	}

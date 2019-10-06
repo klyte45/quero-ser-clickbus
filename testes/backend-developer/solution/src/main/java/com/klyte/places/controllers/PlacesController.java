@@ -4,6 +4,7 @@ import com.klyte.places.dto.PlaceDTO;
 import com.klyte.places.dto.PlaceRequestDTO;
 import com.klyte.places.services.PlaceService;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +14,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping(value = "/places", produces = "application/json", consumes = "application/json")
+@RequestMapping(value = "/places", produces = "application/json")
 public class PlacesController {
 
     @Autowired
@@ -23,8 +25,12 @@ public class PlacesController {
 
     @GetMapping
     @ApiOperation("List all places stored")
-    public ResponseEntity<List<PlaceDTO>> list() {
-        return new ResponseEntity<>(placeService.listPlaces(), HttpStatus.OK);
+    public ResponseEntity<List<PlaceDTO>> list(
+            @ApiParam("Filter the list and brings only that contains this string in its name.")
+            @RequestParam(value = "name", required = false) Optional<String> name
+
+    ) {
+        return new ResponseEntity<>(placeService.listPlaces(name.orElse("")), HttpStatus.OK);
     }
 
     @GetMapping("/{slug}")
@@ -56,11 +62,4 @@ public class PlacesController {
         return new ResponseEntity<>(placeService.createPlace(place), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{slug}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @ApiOperation("Delete a place")
-    public ResponseEntity<Void> delete(@PathVariable("slug") String urlSlug) {
-        placeService.deletePlace(urlSlug);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
 }

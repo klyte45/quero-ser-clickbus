@@ -17,9 +17,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.klyte.places.util.TestUtils.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 
 @RunWith(SpringRunner.class)
@@ -172,19 +174,28 @@ public class PlaceServiceTests {
     }
 
     @Test
-    public void testListSuccess() {
+    public void testListSuccess_noFilter() {
         List<PlaceEntity> outDb = createRandomSizeListEntities();
-        Mockito.when(repository.findAll()).then((x) -> {
+        Mockito.when(repository.findAllByNameContaining(any())).then((x) -> {
             return outDb;
         });
-        List<PlaceDTO> out = placeService.listPlaces();
+        List<PlaceDTO> out = placeService.listPlaces("");
         assertListSame(out, outDb);
+    }
+
+    @Test
+    public void testListSuccess_Filter() {
+        List<PlaceEntity> outDb = createRandomSizeListEntities();
+        String nameToFilter = outDb.get(0).getName();
+        Mockito.when(repository.findAllByNameContaining(any())).then((x) -> outDb.stream().filter((y) -> y.getName().contains(x.getArgument(0))).collect(Collectors.toList()));
+        List<PlaceDTO> out = placeService.listPlaces(nameToFilter);
+        assertListSameName(out, nameToFilter);
     }
 
     @Test(expected = DummyException.class)
     public void testListFailure() {
-        Mockito.when(repository.findAll()).thenThrow(new DummyException());
-        placeService.listPlaces();
+        Mockito.when(repository.findAllByNameContaining(any())).thenThrow(new DummyException());
+        placeService.listPlaces("");
     }
 
     private static void assertInOutSameValue(PlaceDTO in, PlaceDTO out) {
@@ -205,6 +216,12 @@ public class PlaceServiceTests {
         assertEquals(entityList.size(), dtoList.size());
         for (int i = 0; i < entityList.size(); i++) {
             assertDtoEntitySameValue(dtoList.get(i), entityList.get(i));
+        }
+    }
+
+    private static void assertListSameName(List<PlaceDTO> dtoList, String name) {
+        for (int i = 0; i < dtoList.size(); i++) {
+            assertTrue(dtoList.get(i).getName().contains(name));
         }
     }
 
