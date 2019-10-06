@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Entity
 @Data
-@Table(name="PLACES")
+@Table(name = "PLACES", uniqueConstraints = {@UniqueConstraint(name = "slug", columnNames = {"URL_SLUG"})})
 public class PlaceEntity {
 
     @Id

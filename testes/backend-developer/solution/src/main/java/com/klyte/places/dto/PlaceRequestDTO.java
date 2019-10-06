@@ -1,7 +1,6 @@
 package com.klyte.places.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,7 +8,6 @@ import javax.validation.constraints.Pattern;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@AllArgsConstructor
 @NoArgsConstructor
 public class PlaceRequestDTO {
     @Pattern(regexp = ".{1,120}")

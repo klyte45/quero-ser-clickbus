@@ -5,7 +5,7 @@ import com.klyte.places.dto.PlaceRequestDTO;
 
 import java.util.List;
 
-public interface PlacesService {
+public interface PlaceService {
     List<PlaceDTO> listPlaces();
 
     PlaceDTO getPlace(String slug);

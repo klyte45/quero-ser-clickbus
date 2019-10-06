@@ -5,7 +5,7 @@ import com.klyte.places.dto.PlaceDTO;
 import com.klyte.places.dto.PlaceRequestDTO;
 import com.klyte.places.entities.PlaceEntity;
 import com.klyte.places.exception.PlaceNotFoundException;
-import com.klyte.places.repository.PlacesRepository;
+import com.klyte.places.repository.PlaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class PlacesServiceImpl implements PlacesService {
+public class PlaceServiceImpl implements PlaceService {
 
     @Autowired
-    private PlacesRepository repository;
+    private PlaceRepository repository;
 
     @Autowired
     private ObjectMapper mapper;
