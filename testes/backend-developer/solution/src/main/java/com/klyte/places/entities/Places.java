@@ -1,10 +1,11 @@
 package com.klyte.places.entities;
 
 import lombok.Data;
-import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.security.Timestamp;
 
 @Entity
