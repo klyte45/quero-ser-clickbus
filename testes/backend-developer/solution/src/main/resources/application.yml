@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: "jdbc:mysql://${MYSQL_HOST:localhost}:3306/places"
-    username: "springuser"
-    password: "Spring123."
+    username: "${MYSQL_USERNAME:springuser}"
+    password: "${MYSQL_PASSWORD:Spring123.}"
   jpa:
     hibernate:
       naming:
