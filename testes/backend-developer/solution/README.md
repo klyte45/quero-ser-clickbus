@@ -17,7 +17,9 @@ Or, if you want, you can set it directly via line command
 * **spring.datasource.password** - for password
 * **spring.datasource.driverClassName** - to change the driver type (use *org.h2.Driver* for H2 DB)
 
-An example of h2 configuration values can be found at test's `application.yml` file
+### An example of h2 configuration line command:
+
+`java -jar .\places-0.0.1-SNAPSHOT.jar --spring.datasource.driverClassName="org.h2.Driver" --spring.datasource.url="jdbc:h2:mem:db;DB_CLOSE_DELAY=-1" --spring.datasource.username="sa" --spring.datasource.password="sa"`
 
 You also can use any other line command features supported by SpringBoot.
 
